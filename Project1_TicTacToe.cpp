@@ -14,7 +14,9 @@ char currentTurn = 'X';
 const char empty = '.';
 char winner = '.';
 std::mutex mtx;
+
 std::condition_variable cond;
+
 
 
 
