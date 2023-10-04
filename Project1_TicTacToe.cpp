@@ -8,6 +8,7 @@
 char board[3][3];
 
 const char empty = '.';
+char winner = '.';
 /*
 void foo()
 {
@@ -35,8 +36,12 @@ bool isGameWon() {
         spot3 = board[i][2];
         
         if (spot1 != empty || spot2 != empty || spot3 != empty)
-            if (spot1 == spot2 && spot2 == spot3)
+            if (spot1 == spot2 && spot2 == spot3){
+                winner = spot1;
                 return true;
+            }
+
+                
     }
     for (int i = 0; i < 3; i++) {
         spot1 = board[0][i];
@@ -44,21 +49,29 @@ bool isGameWon() {
         spot3 = board[2][i];
 
         if (spot1 != empty || spot2 != empty || spot3 != empty)
-            if (spot1 == spot2 && spot2 == spot3)
+            if (spot1 == spot2 && spot2 == spot3) {
+                winner = spot1;
                 return true;
+            }
+
     }
     spot1 = board[0][0];
     spot2 = board[1][1];
     spot3 = board[2][2];
     if (spot1 != empty || spot2 != empty || spot3 != empty)
-        if (spot1 == spot2 && spot2 == spot3)
+        if (spot1 == spot2 && spot2 == spot3) {
+            winner = spot1;
             return true;
+        }
+
     spot1 = board[0][2];
     spot2 = board[1][1];
     spot3 = board[2][0];
     if (spot1 != empty || spot2 != empty || spot3 != empty)
-        if (spot1 == spot2 && spot2 == spot3)
+        if (spot1 == spot2 && spot2 == spot3) {
+            winner = spot1;
             return true;
+        }
 
 
     return false;
@@ -68,7 +81,7 @@ bool isGameStillGoing() {
     if(!isGameWon())
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
-                if (board[i][j] == -1)
+                if (board[i][j] == empty)
                     return true;
             }
         }
@@ -76,7 +89,7 @@ bool isGameStillGoing() {
 }
 
 bool isSpotTaken(int x, int y) {
-    if (board[x][y] = empty)
+    if (board[x][y] == empty)
         return false;
     return true;
 }
@@ -113,7 +126,9 @@ int main()
 
     std::cout << "\nplayers complete";
     std::cout << "\nmain complete";
-
+    board[2][0] = 'X';
+    board[1][1] = 'X';
+    board[0][2] = 'X';
 
     for (int i = 0; i < 3; i++) {
         std::cout << "\n";
@@ -122,9 +137,10 @@ int main()
         }
         
     }
-    
-
+    std::cout << "\n" << isSpotTaken(2,0);
+    std::cout << "\n" << isSpotTaken(0,0);
     std::cout << "\n" << isGameStillGoing();
+    std::cout << "\n" << winner;
 
     return 0;
 }
