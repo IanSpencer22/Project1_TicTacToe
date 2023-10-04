@@ -7,7 +7,7 @@
 
 int board[3][3];
 
-
+/*
 void foo()
 {
     std::cout << "\nwe in the foo now ";
@@ -18,11 +18,19 @@ void bar(int x) {
     std::cout << "\nwe in the bar now " << x;
 
 }
+*/
+void players(int x) {
+    
+    std::cout << "\nwe are in player " << x;
+    
+
+}
+
 
 int main()
 {
-    std::thread first(foo);
-    std::thread second(bar, 0);
+    std::thread first(players, 0);
+    std::thread second(players, 1);
 
 
 
@@ -37,7 +45,7 @@ int main()
     first.join();
     second.join();
 
-    std::cout << "\nfoo() and bar complete";
+    std::cout << "\nplayers complete";
     std::cout << "\nmain complete";
 
     for (int i = 0; i < 3; i++) {
@@ -45,7 +53,7 @@ int main()
         for (int j = 0; j < 3; j++) {
             std::cout << board[i][j] << " ";
         }
-        t
+        
     }
     
 
