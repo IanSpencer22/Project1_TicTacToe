@@ -130,6 +130,8 @@ void players(char player) {
     
     while (isGameStillGoing()) {
         cond.wait(lock, [&] { return player == currentTurn; });
+        if (!isGameStillGoing())
+            break;
         placed = false;
         while (!placed) {
             int x = rand() % 3;
@@ -151,7 +153,7 @@ void players(char player) {
             break;
 
         }
-
+        cond.notify_all();
     }
     
 
