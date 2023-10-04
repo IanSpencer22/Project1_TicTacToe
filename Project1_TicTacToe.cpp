@@ -9,20 +9,14 @@ char board[3][3];
 
 const char empty = '.';
 char winner = '.';
+
+
+
+
 /*
-void foo()
-{
-    std::cout << "\nwe in the foo now ";
-}
-void bar(int x) {
+Checks if Game won and sets winner if the game is won
 
-
-    std::cout << "\nwe in the bar now " << x;
-
-}
 */
-
-
 bool isGameWon() {
     //8 possible ways to win
     char spot1;
@@ -77,6 +71,10 @@ bool isGameWon() {
     return false;
 }
 
+
+/*
+Checks if game is still going
+*/
 bool isGameStillGoing() {
     if(!isGameWon())
         for (int i = 0; i < 3; i++) {
@@ -88,6 +86,10 @@ bool isGameStillGoing() {
     return false;
 }
 
+
+/*
+Checks if spot is still going
+*/
 bool isSpotTaken(int x, int y) {
     if (board[x][y] == empty)
         return false;
@@ -96,10 +98,12 @@ bool isSpotTaken(int x, int y) {
 
 
 
-
-void players(int x) {
+/*
+main thread for both players
+*/
+void players(char player) {
     
-    std::cout << "\nwe are in player " << x + 1;
+    std::cout << "\nwe are in player " << player;
     
 
 }
@@ -108,8 +112,8 @@ void players(int x) {
 
 int main()
 {
-    std::thread first(players, 0);
-    std::thread second(players, 1);
+    std::thread first(players, 'X');
+    std::thread second(players, 'O');
 
 
 
@@ -137,9 +141,7 @@ int main()
         }
         
     }
-    std::cout << "\n" << isSpotTaken(2,0);
-    std::cout << "\n" << isSpotTaken(0,0);
-    std::cout << "\n" << isGameStillGoing();
+    
     std::cout << "\n" << winner;
 
     return 0;
