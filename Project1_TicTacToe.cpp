@@ -1,12 +1,13 @@
-// Project1_TicTacToe.cpp : This file contains the 'main' function. Program execution begins and ends there.
+﻿// Project1_TicTacToe.cpp : This file contains the 'main' function. Program execution begins and ends there.
 //
 
 #include <iostream>
 #include <thread>
 #include <mutex> 
 
-int board[3][3];
+char board[3][3];
 
+const char empty = '.';
 /*
 void foo()
 {
@@ -23,16 +24,17 @@ void bar(int x) {
 
 bool isGameWon() {
     //8 possible ways to win
-    int spot1;
-    int spot2;
-    int spot3;
+    char spot1;
+    char spot2;
+    char spot3;
+    
 
     for (int i = 0; i < 3; i++) {
         spot1 = board[i][0];
         spot2 = board[i][1];
         spot3 = board[i][2];
         
-        if (spot1 != -1 || spot2 != -1 || spot3 != -1)
+        if (spot1 != empty || spot2 != empty || spot3 != empty)
             if (spot1 == spot2 && spot2 == spot3)
                 return true;
     }
@@ -41,20 +43,20 @@ bool isGameWon() {
         spot2 = board[1][i];
         spot3 = board[2][i];
 
-        if (spot1 != -1 || spot2 != -1 || spot3 != -1)
+        if (spot1 != empty || spot2 != empty || spot3 != empty)
             if (spot1 == spot2 && spot2 == spot3)
                 return true;
     }
     spot1 = board[0][0];
     spot2 = board[1][1];
     spot3 = board[2][2];
-    if (spot1 != -1 || spot2 != -1 || spot3 != -1)
+    if (spot1 != empty || spot2 != empty || spot3 != empty)
         if (spot1 == spot2 && spot2 == spot3)
             return true;
     spot1 = board[0][2];
     spot2 = board[1][1];
     spot3 = board[2][0];
-    if (spot1 != -1 || spot2 != -1 || spot3 != -1)
+    if (spot1 != empty || spot2 != empty || spot3 != empty)
         if (spot1 == spot2 && spot2 == spot3)
             return true;
 
@@ -73,6 +75,11 @@ bool isGameStillGoing() {
     return false;
 }
 
+bool isSpotTaken(int x, int y) {
+    if (board[x][y] = empty)
+        return false;
+    return true;
+}
 
 
 
@@ -95,7 +102,7 @@ int main()
 
     for (int i = 0; i < 3; i++) {
         for (int j = 0; j < 3; j++) {
-            board[i][j] = -1;
+            board[i][j] = empty;
         }
     }
 
