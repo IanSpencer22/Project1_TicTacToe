@@ -3,13 +3,18 @@
 
 #include <iostream>
 #include <thread>
+#include <condition_variable>
 #include <mutex> 
+
+
 
 char board[3][3];
 
+char currentTurn = 'X';
 const char empty = '.';
 char winner = '.';
-
+std::mutex mtx;
+std::condition_variable cond;
 
 
 
@@ -99,11 +104,53 @@ bool isSpotTaken(int x, int y) {
 
 
 /*
+Prints current board
+*/
+void printBoard() {
+    for (int i = 0; i < 3; i++) {
+        std::cout << "\n";
+        for (int j = 0; j < 3; j++) {
+            std::cout << board[i][j] << " ";
+        }
+    }
+    std::cout << "\n------" << std::endl;
+}
+
+
+
+/*
 main thread for both players
 */
 void players(char player) {
+    std::unique_lock<std::mutex> lock(mtx);
+    srand(time(NULL));
+    bool placed = false;
     
-    std::cout << "\nwe are in player " << player;
+    while (isGameStillGoing()) {
+        cond.wait(lock, [&] { return player == currentTurn; });
+        placed = false;
+        while (!placed) {
+            int x = rand() % 3;
+            int y = rand() % 3;
+            if (!isSpotTaken(x, y)) {
+                board[x][y] = player;
+                placed = true;
+            }
+        }
+
+        printBoard();
+        switch (currentTurn)
+        {
+        case 'X':
+            currentTurn = 'O';
+            break;
+        case 'O':
+            currentTurn = 'X';
+            break;
+
+        }
+
+    }
     
 
 }
@@ -130,17 +177,9 @@ int main()
 
     std::cout << "\nplayers complete";
     std::cout << "\nmain complete";
-    board[2][0] = 'X';
-    board[1][1] = 'X';
-    board[0][2] = 'X';
+    
 
-    for (int i = 0; i < 3; i++) {
-        std::cout << "\n";
-        for (int j = 0; j < 3; j++) {
-            std::cout << board[i][j] << " ";
-        }
-        
-    }
+    
     
     std::cout << "\n" << winner;
 
