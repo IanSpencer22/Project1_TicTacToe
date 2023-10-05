@@ -23,6 +23,7 @@ std::condition_variable cond;
 /*
 Checks if Game won and sets winner if the game is won
 
+returns if the game is won
 */
 bool isGameWon() {
     //8 possible ways to win
@@ -81,6 +82,8 @@ bool isGameWon() {
 
 /*
 Checks if game is still going
+
+returns if the game is still going
 */
 bool isGameStillGoing() {
     if(!isGameWon())
@@ -96,6 +99,10 @@ bool isGameStillGoing() {
 
 /*
 Checks if spot is still going
+
+takes in two ints that represents the coordinates of a spot on the board
+
+returns if it is taken
 */
 bool isSpotTaken(int x, int y) {
     if (board[x][y] == empty)
@@ -123,6 +130,8 @@ void printBoard() {
 
 /*
 main thread for both players
+
+takes in a char for what character represents the player
 */
 void players(char player) {
     std::unique_lock<std::mutex> lock(mtx);
@@ -161,7 +170,9 @@ void players(char player) {
 }
 
 
-
+/*
+main function
+*/
 int main()
 {
     std::thread first(players, 'X');
