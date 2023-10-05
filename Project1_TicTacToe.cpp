@@ -4,14 +4,14 @@
 #include <iostream>
 #include <thread>
 #include <condition_variable>
-#include <mutex> 
+#include <mutex>
 
 
 
 char board[3][3];
 
 char currentTurn = 'X';
-const char empty = '.';
+const char empty = ' ';
 char winner = '.';
 std::mutex mtx;
 
@@ -29,20 +29,20 @@ bool isGameWon() {
     char spot1;
     char spot2;
     char spot3;
-    
+
 
     for (int i = 0; i < 3; i++) {
         spot1 = board[i][0];
         spot2 = board[i][1];
         spot3 = board[i][2];
-        
+
         if (spot1 != empty || spot2 != empty || spot3 != empty)
             if (spot1 == spot2 && spot2 == spot3){
                 winner = spot1;
                 return true;
             }
 
-                
+
     }
     for (int i = 0; i < 3; i++) {
         spot1 = board[0][i];
@@ -109,13 +109,14 @@ bool isSpotTaken(int x, int y) {
 Prints current board
 */
 void printBoard() {
+    std::cout << "\n-------------";
     for (int i = 0; i < 3; i++) {
-        std::cout << "\n";
+        std::cout << "\n| ";
         for (int j = 0; j < 3; j++) {
-            std::cout << board[i][j] << " ";
+            std::cout << board[i][j] << " | ";
         }
     }
-    std::cout << "\n------" << std::endl;
+    std::cout << "\n-------------\n";
 }
 
 
@@ -127,7 +128,7 @@ void players(char player) {
     std::unique_lock<std::mutex> lock(mtx);
     srand(time(NULL));
     bool placed = false;
-    
+
     while (isGameStillGoing()) {
         cond.wait(lock, [&] { return player == currentTurn; });
         if (!isGameStillGoing())
@@ -155,7 +156,7 @@ void players(char player) {
         }
         cond.notify_all();
     }
-    
+
 
 }
 
@@ -174,18 +175,18 @@ int main()
         }
     }
 
-    std::cout << "\n Inside main";
+    std::cout << "\nInside main:\n\nThread Tic-Tac-Toe\n";
 
     first.join();
     second.join();
 
-    std::cout << "\nplayers complete";
-    std::cout << "\nmain complete";
-    
+    std::cout << "\n\nPlayers complete: Game Over\n";
+    if (winner == 'X' || winner == 'O')
+        std::cout << "Congrats! Thread " << winner << " wins!\n\n";
+    else
+        std::cout << "Neither thread wins. Draw.\n\n";
 
-    
-    
-    std::cout << "\n" << winner;
+    std::cout << "main complete";
 
     return 0;
 }
@@ -195,7 +196,7 @@ int main()
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu
 // Debug program: F5 or Debug > Start Debugging menu
 
-// Tips for Getting Started: 
+// Tips for Getting Started:
 //   1. Use the Solution Explorer window to add/manage files
 //   2. Use the Team Explorer window to connect to source control
 //   3. Use the Output window to see build output and other messages
